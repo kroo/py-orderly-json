@@ -1,0 +1,28 @@
+  object {
+      object {
+          array [
+              object {
+                object {
+                  number rating;
+                  string byuserid;
+                  string byusername;
+                  string feedback;
+                } rating;
+              }
+          ] ratings;
+          string carid;
+          string description;
+          number price;
+          array [
+              object {
+                  object {
+                      string url;
+                      string caption;
+                  } photo;
+              }
+          ] photos;
+          string owner;
+          string make-model-year;
+          array [ number ] location?;
+      } profile;
+  }

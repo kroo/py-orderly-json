@@ -1,0 +1,6 @@
+object {
+  string name;
+  string description?;
+  string homepage /^http:/;
+  integer {1500,3000} invented;
+}*;
