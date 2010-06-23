@@ -28,7 +28,7 @@ def main(argv, otherArg=None):
 
 WS : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+   { $channel = HIDDEN; } ;
 
-COMMENT : '//' (~'\n')* {$channel = HIDDEN; };
+COMMENT : ('//' | '#') (~'\n')* {$channel = HIDDEN; };
 
 orderly_schema returns [result] : e=unnamed_entries? ';'? {result = e};
 
@@ -66,7 +66,7 @@ definition_prefix returns [result]
   |  'any'                                                                                    { result = Prefix('any')}
   |  'array' (
       ('{' e=unnamed_entries? ';'? '}' o=OPTIONAL_ADDITIONAL_MARKER? rng=optional_range?)     { result = Prefix('array', entries=('e' in locals() and e), more=('o' in locals() and $o), rng=('rng' in locals() and rng))}
-    | ('[' e=unnamed_entry? ']' rng=optional_range?))                                         { result = Prefix('array', entries=('e' in locals() and e), rng=('rng' in locals() and rng))}
+    | ('[' e=unnamed_entry? ';'? ']' rng=optional_range?))                                         { result = Prefix('array', entries=('e' in locals() and e), rng=('rng' in locals() and rng))}
   |  'object' '{' e=named_entries? ';'? '}' o=OPTIONAL_ADDITIONAL_MARKER?                     { result = Prefix('object', entries=('e' in locals() and e), more=('o' in locals() and $o))}
   |  'union'  '{' e=unnamed_entries? ';'? '}'                                                 { result = Prefix('union', entries=('e' in locals() and e))}
   ;
@@ -122,7 +122,7 @@ OPTIONAL_PERL_REGEX : ('/' ( (~'/') | '\\/' )+ '/');
 
 ///////////// JSON  //////////////////////////
 
-json_object :  '{' members? '}';
+json_object returns [result] :  '{' m=members? '}' {result = m or {}};
 
 members  returns [d]
 @init {
@@ -161,9 +161,7 @@ json_value returns [result]
 
 // ----------------------------------------
 
-json_string returns [result] : '"' c=chars? '"' {result = str($c.text)};
-
-chars  :  CHARACTER +;
+json_string returns [result] : c=STRING {result = str($c.text[1:-1])};
 
 fragment
 QUOTE_OR_BACKSLASH_OR_CONTROL_CHARACTER
@@ -172,7 +170,7 @@ QUOTE_OR_BACKSLASH_OR_CONTROL_CHARACTER
   |  '\\' .
   ;
 
-CHARACTER  :  ~'"';
+STRING  :  '"' ~'"'* '"';
 
 fragment
 HEX  :  'a'..'f'

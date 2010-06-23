@@ -6,6 +6,11 @@ def parse(orderly_string):
   """parses an orderly-json string, and returns a json-schema object"""
   return orderly_json.parseString(orderly_string)
 
+def parseFile(path):
+  """parses an orderly-json file, and returns a json-schema object"""
+  return orderly_json.parseFile(path)
+
+
 def validate(json_object, orderly_object):
   """validates the json string with an orderly definition"""
   if type(orderly_object) is str:

@@ -102,7 +102,13 @@ def main(argv=sys.argv):
 def parseString(string):
   if 'ANTLRStringStream' not in globals():
     from OrderlyJSONLexer import ANTLRStringStream
-  return parseStream(ANTLRStringStream(string))[0].get_object()
+  result = parseStream(ANTLRStringStream(string))
+  return result[0].get_object()
+
+def parseFile(path):
+  if 'ANTLRFileStream' not in globals():
+    from OrderlyJSONLexer import ANTLRFileStream
+  return parseStream(ANTLRFileStream(path))[0].get_object()
 
 def parseStream(char_stream):
   try:
