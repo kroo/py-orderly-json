@@ -29,6 +29,8 @@ class Prefix(object):
       elif self.kind == "array":
         if type(self.entries) is not list: self.entries = [self.entries];
         output['items'] = map(lambda x: x.get_object(), self.entries)
+      elif self.kind == "union":
+        output['type'] = map(lambda x: x.get_object(), self.entries)
     if self.rng is not None:
       if not self.rng[0] is None:
         output['minimum'] = self.rng[0]
@@ -36,6 +38,8 @@ class Prefix(object):
         output['maximum'] = self.rng[1]
     if self.more:
       output['additionalProperties'] = True
+    elif self.kind == "object":
+      output['additionalProperties'] = False
     return output
 
 class Entry(object):
