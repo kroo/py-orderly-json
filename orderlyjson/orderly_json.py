@@ -27,8 +27,10 @@ class Prefix(object):
           keyname = obj.keys()[0]
           output['properties'][keyname] = obj[keyname]
       elif self.kind == "array":
-        if type(self.entries) is not list: self.entries = [self.entries];
-        output['items'] = map(lambda x: x.get_object(), self.entries)
+        if type(self.entries) is not list:
+          output['items'] = self.entries.get_object()
+        else:
+          output['items'] = map(lambda x: x.get_object(), self.entries)
       elif self.kind == "union":
         output['type'] = map(lambda x: x.get_object(), self.entries)
     if self.rng is not None:
