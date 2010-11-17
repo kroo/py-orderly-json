@@ -76,6 +76,31 @@
         raise ValueError("Value %r for field '%s' is greater than maximum value: %f" % (value, fieldname, maximum))
     ValueError: Value 4009 for field 'invented' is greater than maximum value: 3000.000000
 
+## Validation Tool ##
+
+As a starting point, theres a short python script for validating a json file with
+an associated orderly schema in the tools directory named `validate.py`; thanks to
+**Jens Hübel** for the contribution:
+
+> Usage is then like this:
+>
+>     python validate.py invoice.json PropDef.orderly
+>
+> gives:
+>
+>     OK
+>
+> or:
+>
+>     python validate.py invoice_bad.json PropDef.orderly
+>
+> results in:
+>
+>     Validation FAILED
+>
+>     Value 'XXX' for field 'updatability' is not in the enumeration: ['readonly', 're adwrite', 'whencheckedout', 'oncreate']
+
+
 ## Thanks and License ##
 
 Thanks to **Lloyd Hilaiel** for the documentation and language specification at
